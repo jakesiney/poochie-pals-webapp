@@ -63,7 +63,7 @@ ssh  -o StrictHostKeyChecking=accept-new \
 export AMI_VERSION=$(date +'%d-%m-%Y-%H-%M')
 aws ec2 create-image \
     --instance-id $INSTANCE_ID \
-    --name "acebook-build-$AMI_VERSION" \
+    --name "poochie-pals-jakesiney-$AMI_VERSION" \
     --no-reboot
 
 # Cleanup
