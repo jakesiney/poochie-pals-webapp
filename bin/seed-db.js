@@ -8,7 +8,7 @@ let db = new sqlite3.Database('./db/poochie-pals.db', sqlite3.OPEN_READWRITE | s
   }
   console.log('Connected to the poochie-pals database.');
 
-  // db.exec(`DROP TABLE Users;`);
+  db.exec(`DROP TABLE Users;`);
   db.exec(`
     CREATE TABLE Users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
