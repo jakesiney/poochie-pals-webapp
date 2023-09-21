@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       INSTANCE_IP: ${{ vars.INSTANCE_IP }}
-      # INSTANCE_IP_TWO: ${{ vars.INSTANCE_IP_TWO }}
+      INSTANCE_IP_TWO: ${{ vars.INSTANCE_IP_TWO }}
       POOCHIE_TOKEN: ${{ secrets.POOCHIE_TOKEN }}
       AWS_CLI_TOKEN: ${{ secrets.AWS_CLI_TOKEN }}
       AWS_SECRET_TOKEN: ${{ secrets.AWS_SECRET_TOKEN }}
