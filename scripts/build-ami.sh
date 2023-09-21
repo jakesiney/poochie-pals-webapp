@@ -24,7 +24,7 @@ yes | ssh-keygen -t rsa -f keypair -q -N ""
 echo " -> created keypair"
 
 # 2 - Start a new instance for the build
-export INSTANCE_ID=$(aws ec2 run-instances --image-id "ami-0da7f840f6c348e2d" --instance-type "t2.micro" --query 'Instances[0].InstanceId' --output text)
+export INSTANCE_ID=$(aws ec2 run-instances --image-id "ami-068bb671fdce26d02" --instance-type "t2.micro" --query 'Instances[0].InstanceId' --output text)
 echo " -> started build instance $INSTANCE_ID"
 
 echo $INSTANCE_ID > ./build_instance_id
@@ -47,7 +47,7 @@ echo " -> waiting"
 sleep 10
 ssh  -o StrictHostKeyChecking=accept-new \
     -i ./keypair ec2-user@$INSTANCE_IP \
-    "sudo chown ec2-user /var/acebook"
+    "sudo chown ec2-user /var//poochie-pals"
 rsync -av -e "ssh -i ./keypair -o StrictHostKeyChecking=no" ./* ec2-user@$INSTANCE_IP:/var/poochie-pals/
 
 echo " -> copying files"  
@@ -57,7 +57,7 @@ scp -o StrictHostKeyChecking=accept-new \
 
 ssh  -o StrictHostKeyChecking=accept-new \
     -i ./keypair ec2-user@$INSTANCE_IP \
-    "ls -la /var/acebook"
+    "ls -la /var//poochie-pals"
 
 # Creating AMI from instance
 export AMI_VERSION=$(date +'%d-%m-%Y-%H-%M')
