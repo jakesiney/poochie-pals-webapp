@@ -14,7 +14,7 @@ chmod 700 ~/.ssh
 
 # we should probably avoid hardcoding this, in case
 # the IP changes
-rsync -av -e "ssh -o StrictHostKeyChecking=no" ./* ec2-user@$INSTANCE_IP:/var/poochiepals/
+rsync -av -e "ssh -o StrictHostKeyChecking=no" ./* ubuntu@$INSTANCE_IP:/var/poochiepals/
 # rsync -av -e "ssh -o StrictHostKeyChecking=no" ./* ec2-user@$INSTANCE_IP_TWO:/var/poochiepals/
 
 echo "rsync finished"
