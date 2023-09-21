@@ -19,6 +19,6 @@ rsync -av -e "ssh -o StrictHostKeyChecking=no" ./* ec2-user@$INSTANCE_IP:/var/po
 
 echo "rsync finished"
 ssh -o StrictHostKeyChecking=no ec2-user@$INSTANCE_IP "sudo systemctl restart poochiepals"
-ssh -o StrictHostKeyChecking=no ec2-user@$INSTANCE_IP_TWO "sudo systemctl restart poochiepals"
+# ssh -o StrictHostKeyChecking=no ec2-user@$INSTANCE_IP_TWO "sudo systemctl restart poochiepals"
 echo "reload finished"
 
