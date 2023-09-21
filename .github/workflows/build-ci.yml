@@ -1,0 +1,85 @@
+# create a yaml file for github actions to build and test the project then deploy it to aws ec2 instance
+# Path: .git/workflows/build-ci.yml
+
+
+name: Build CI and Deploy
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+steps:
+  - name: Checkout
+    uses: actions/checkout@v2
+  - name: Setup Node.js
+    uses: actions/setup-node@v2
+    with:
+      node-version: 18
+  - name: Install Dependencies
+    run: npm install
+  - name: Build
+    run: npm run build --if-present
+  - name: Test
+    run: npm test
+  
+deploy:
+  name: Deploy
+  needs: build
+  runs-on: ubuntu-latest
+env:
+  INSTANCE_IP: ${{ vars.INSTANCE_IP }}
+  # INSTANCE_IP_TWO: ${{ vars.INSTANCE_IP_TWO }}
+  POOCHIE_TOKEN: ${{ secrets.POOCHIE_TOKEN }}
+  AWS_CLI_TOKEN: ${{ secrets.CI_AWS_ACCESS_KEY_TOKEN }}
+  AWS_SECRET_TOKEN: ${{ secrets.CI_AWS_SECRET_TOKEN }}
+  AWS_INSTANCE_SG_ID: sg-0a527a53e949559b0
+defaults:
+  run:
+    working-directory: ./
+  steps:
+      - name: Check out the repository to the runner
+        uses: actions/checkout@v3
+      - name: List Repository Contents
+        run: ls -R
+      - name: Configure AWS credentials
+        run: |
+          aws configure set aws_access_key_id $AWS_CLI_TOKEN
+          aws configure set aws_secret_access_key $AWS_SECRET_TOKEN
+          aws configure set region eu-west-2
+      - name: Get runner IP address
+        id: ip
+        uses: haythem/public-ip@v1.2
+      - name: Whitelist runner IP address
+        run: |
+          aws ec2 authorize-security-group-ingress \
+            --group-id $AWS_INSTANCE_SG_ID \
+            --protocol tcp \
+            --port 22 \
+            --cidr ${{ steps.ip.outputs.ipv4 }}/32
+      - name: Call a Bash Script
+        run: |
+          chmod +x scripts/deploy-to-instance.sh
+          ./scripts/deploy-to-instance.sh
+      - name: Revoke runner IP address
+        run: |
+          aws ec2 revoke-security-group-ingress \
+            --group-id $AWS_INSTANCE_SG_ID \
+            --protocol tcp \
+            --port 22 \
+            --cidr ${{ steps.ip.outputs.ipv4 }}/32
+
+
+
+
+
+
+
+ 
+
+
+
+
+
